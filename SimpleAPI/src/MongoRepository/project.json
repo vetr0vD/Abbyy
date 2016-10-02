@@ -1,0 +1,25 @@
+{
+    "version": "1.0.0",
+    "dependencies": {
+        "Constartors": "1.0.0-*",
+        "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Configuration": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0",
+        "Microsoft.IdentityModel.Protocols": "2.0.0",
+        "MongoDB.Bson": "2.3.0",
+        "MongoDB.Driver": "2.3.0",
+        "NETStandard.Library": "1.6.0",
+        "System.Linq.Expressions": "4.1.0"
+    },
+    "frameworks": {
+        "netcoreapp1.0": {
+            "imports": [
+                "dotnet5.6",
+                "portable-net45+win8"
+            ]
+        }
+    },
+    "buildOptions": {
+        "define": [ "DEBUG", "CONTRACTS_FULL" ]
+    }
+}

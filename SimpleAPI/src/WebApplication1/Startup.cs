@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Constartors;
+using MongoRepository;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace SimpleAPI
 {
@@ -28,6 +33,8 @@ namespace SimpleAPI
             }
 
             builder.AddEnvironmentVariables();
+            builder.AddUserSecrets();
+
             Configuration = builder.Build();
         }
 
@@ -35,18 +42,41 @@ namespace SimpleAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IRepository, MongoRep>();
+            services.AddScoped<IConnectionStringProvider, MongoConnectionStringProvider>();
             services.AddApplicationInsightsTelemetry(Configuration);
-            services.AddMvc();
+            services.AddAuthentication(options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
 
             app.UseApplicationInsightsRequestTelemetry();
-
             app.UseApplicationInsightsExceptionTelemetry();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+            });
+
+            app.UseFacebookAuthentication(new FacebookOptions
+            {
+                AppId = Configuration["Facebook:AppId"],
+                AppSecret = Configuration["Facebook:AppSecret"],
+                AuthenticationScheme = "Facebook",
+                SaveTokens = true
+            });
 
             app.UseMvc();
         }
