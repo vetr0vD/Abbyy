@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6AE431B8-E97D-412E-ADFB-81EA6F22B0D3}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
+		swagger.yaml = swagger.yaml
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SimpleAPI", "src\WebApplication1\SimpleAPI.xproj", "{71DF2BA3-5772-4698-9F60-DD0D9BA28117}"

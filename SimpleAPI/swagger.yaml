@@ -1,0 +1,65 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Тестовое задание
+  description: "Необходимо разработать API позволяющий производить авторизацию пользователей с пощью соцсетей. API должен позволять, используя клиентское приложение, выполнять следующие функции: \n
+1. Зарегистрировать/Авторизовать нового пользователя через фейсбук \n
+2. Получить список всех зарегистрированных пользователей. Список должен включать в себя: ФИО, Id в соц сети, Email адрес пользователя"
+  version: "1.0.0"
+# the domain of the service
+host: localhost:44355
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+
+paths:
+  /UserInfo:
+    get:
+      summary: Список всех пользователей системы
+      description: |
+          Получить список всех зарегистрированных пользователей. Список должен включать в себя: ФИО, Email адрес пользователя, Id пользователя в соц сети
+      tags:
+        - User
+      responses:
+        200:
+          description: Массив пользователей
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+  /Login:
+    get:
+      summary: Логин в систему и создание записи об этом
+      responses:
+        200:
+          description: Успешно
+        default:
+          description: Unexpected error
+  /Logout:
+    get:
+      summary: Логоут из системы
+      responses:
+        200:
+          description: Успешно
+        default:
+          description: Unexpected error
+definitions:
+  User:
+    type: object
+    properties:
+      email:
+        type: string
+        description: email
+      FirstName:
+        type: string
+        description: Имя
+      LastName:
+        type: string
+        description: Фамилия.
+      FacebookId:
+        type: string
+        description: Id пользователя в системе Facebook.
